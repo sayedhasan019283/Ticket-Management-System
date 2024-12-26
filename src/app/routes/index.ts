@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { userRoutes } from '../modules/user/user.route';
 import { openRoutes } from '../modules/open/open.route';
+import { busRoutes } from '../modules/bus/bus.route';
 const router = Router();
 
 const moduleRoutes = [
@@ -12,7 +13,11 @@ const moduleRoutes = [
   {
     path: '/api',
     route: userRoutes,
-  }
+  },
+  {
+    path: '',
+    route: busRoutes,
+  },
   
   
 ];
