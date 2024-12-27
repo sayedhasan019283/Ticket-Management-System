@@ -5,7 +5,7 @@ const BusSchema: Schema = new Schema<TBus>(
     {
       name: { type: String, required: true },
       number: { type: String, required: true, unique: true },
-      route: { type: String, required: true },
+      route: { type: String},
       capacity: { type: Number, required: true },
       schedule: [{ type: Date, required: true }],
     },
