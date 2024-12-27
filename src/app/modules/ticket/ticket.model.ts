@@ -1,10 +1,10 @@
-import { Schema, model, Types } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { TTicket } from './ticket.interface';
 
 const TicketSchema: Schema = new Schema<TTicket>(
   {
     busId: { 
-      type: Types.ObjectId, 
+      type: Schema.Types.ObjectId, 
       ref: 'Bus', 
       required: true 
     },

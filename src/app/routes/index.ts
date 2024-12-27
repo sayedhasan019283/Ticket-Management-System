@@ -3,6 +3,7 @@ import { userRoutes } from '../modules/user/user.route';
 import { openRoutes } from '../modules/open/open.route';
 import { busRoutes } from '../modules/bus/bus.route';
 import { ticketRoutes } from '../modules/ticket/ticket.route';
+import { purchaseRoutes } from '../modules/purchase/purchase.route';
 const router = Router();
 
 const moduleRoutes = [
@@ -22,6 +23,10 @@ const moduleRoutes = [
   {
     path: '',
     route: ticketRoutes,
+  },
+  {
+    path: '',
+    route: purchaseRoutes,
   },
   
   
