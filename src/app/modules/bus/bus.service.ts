@@ -38,10 +38,22 @@ const deleteBusFromDB = async(id : string) => {
     }
 }
 
-
+const getAvailableBusFromDB = async() => {
+    try {
+        const now = new Date();
+        const result = await BusModel.find({ schedule: { $gte: now } });
+        if (!result) {
+            throw new Error("Didn't Find Any Bus");
+        }
+        return result
+    } catch (error) {
+        return error
+    }
+} 
 
 export const busService = {
     createUserIntoDB,
     updateBusIntoDB,
-    deleteBusFromDB
+    deleteBusFromDB,
+    getAvailableBusFromDB
 }

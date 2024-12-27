@@ -20,6 +20,10 @@ router.delete(
     '/admin/bus/:id',
     busController.deleteBus
 )
+router.get(
+    '/buses',
+    busController.getAvailableBus
+)
 
 
 

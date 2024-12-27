@@ -19,5 +19,9 @@ router.delete(
     '/admin/ticket/:id',
     ticketController.deleteTicket
 )
+router.get(
+    '/tickets',
+    ticketController.getAvailableTicket
+)
 
 export const ticketRoutes = router;

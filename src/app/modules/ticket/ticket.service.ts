@@ -38,8 +38,22 @@ const deleteTicketFromDB = async (id: string) => {
     }
 }
 
+const getAvailableTicketFromDB = async() => {
+    try {
+        const now = new Date();
+        const result = await TicketModel.find({ schedule: { $gte: now } });
+        if (!result) {
+            throw new Error("Didn't Find Any Ticket");
+        }
+        return result
+    } catch (error) {
+        return error
+    }
+} 
+
 export const ticketService = {
   createTicketIntoDB,
   updateTicketIntoDB,
   deleteTicketFromDB,
+  getAvailableTicketFromDB
 };

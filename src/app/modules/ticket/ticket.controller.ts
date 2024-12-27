@@ -56,8 +56,26 @@ const deleteTicket = async (req : Request, res : Response, next : NextFunction) 
         next(error)
     }
 }
+
+const getAvailableTicket = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const result = await ticketService.getAvailableTicketFromDB()
+        if (!result) {
+            throw new Error("Didn't Find Any Ticket");
+        }
+        res.status(200).json({
+            success: true,
+            statusCode: 200,
+            message: 'All Available Ticket get successfully',
+            data: result
+        });
+    } catch (error) {
+        next(error)
+    }
+}
 export const ticketController = {
     createTicket,
     updateTicket,
-    deleteTicket
+    deleteTicket,
+    getAvailableTicket
 }

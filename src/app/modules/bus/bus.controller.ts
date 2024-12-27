@@ -55,8 +55,26 @@ const deleteBus = async(req: Request, res: Response, next: NextFunction) => {
         next(error)
     }
 }
+
+const getAvailableBus = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const result = await busService.getAvailableBusFromDB()
+        if (!result) {
+            throw new Error("Didn't Find Any Bus");
+        }
+        res.status(200).json({
+            success: true,
+            statusCode: 200,
+            message: 'All Available bus get successfully',
+            data: result
+        });
+    } catch (error) {
+        next(error)
+    }
+}
 export const busController = {
     createBus,
     updateBus,
-    deleteBus
+    deleteBus,
+    getAvailableBus
 }
