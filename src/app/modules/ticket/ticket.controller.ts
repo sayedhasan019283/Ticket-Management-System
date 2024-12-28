@@ -57,22 +57,32 @@ const deleteTicket = async (req : Request, res : Response, next : NextFunction) 
     }
 }
 
-const getAvailableTicket = async(req: Request, res: Response, next: NextFunction) => {
+const getAvailableTicket = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const result = await ticketService.getAvailableTicketFromDB()
-        if (!result) {
-            throw new Error("Didn't Find Any Ticket");
+        const { id } = req.query;
+
+        console.log("Controller query ID:", id);
+
+        // Validate the `id` query parameter
+        if (typeof id !== "string" && typeof id !== "undefined") {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid query parameters provided!",
+            });
         }
+
+        const result = await ticketService.getAvailableTicketFromDB(id);
+
         res.status(200).json({
             success: true,
             statusCode: 200,
-            message: 'All Available Ticket get successfully',
-            data: result
+            message: "All Available Tickets fetched successfully",
+            data: result,
         });
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
 export const ticketController = {
     createTicket,
     updateTicket,

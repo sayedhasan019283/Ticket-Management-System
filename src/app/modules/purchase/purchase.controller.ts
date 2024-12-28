@@ -5,6 +5,7 @@ const purchaseTicket =async (req : Request, res : Response, next: NextFunction) 
     try {
         const payload = req.body;
         const {userId  } = req.user;
+        console.log(payload)
         const result = await purchaseService.PurchaseServiceFromDB(payload, userId);
         if (!result) {
             throw new Error("Purchase Failed");

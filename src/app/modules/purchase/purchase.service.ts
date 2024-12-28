@@ -1,21 +1,21 @@
 import mongoose from "mongoose";
 import { TPurchase } from "./purchase.interface"
 import { PurchaseModel } from "./purchase.model"
-import { purchaseValidationSchema } from "./purchase.validation";
 
 const PurchaseServiceFromDB = async (payload: TPurchase, userId: string) => {
     try {
-      // Validate the payload using the Zod schema
-      const validatedPayload = purchaseValidationSchema.parse(payload);
-  
+     
       // Add the `userId` to the payload if it is required in the schema/model
       const newPurchaseData = {
-        ...validatedPayload,
+        ...payload,
         userId: new mongoose.Types.ObjectId(userId),
       };
   
       // Create the purchase in the database
       const result = await PurchaseModel.create(newPurchaseData);
+      if (!result ) {
+        throw new Error("Purchase ");
+      }
       return result;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -24,7 +24,6 @@ const PurchaseServiceFromDB = async (payload: TPurchase, userId: string) => {
     }
   };
 
-
 export const purchaseService = {
     PurchaseServiceFromDB
-}
+};

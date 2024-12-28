@@ -38,18 +38,33 @@ const deleteBusFromDB = async(id : string) => {
     }
 }
 
-const getAvailableBusFromDB = async() => {
+const getAvailableBusFromDB = async (busName?: string) => {
     try {
         const now = new Date();
-        const result = await BusModel.find({ schedule: { $gte: now } });
-        if (!result) {
+
+        // Build the query object
+        const query: Record<string, unknown> = { schedule: { $gte: now } };
+
+        // Add the bus name condition if it's provided
+        if (busName) {
+            query.name = busName;
+        }
+
+        console.log("Query:", query);
+
+        const result = await BusModel.find(query);
+
+        if (!result || result.length === 0) {
             throw new Error("Didn't Find Any Bus");
         }
-        return result
+
+        return result;
     } catch (error) {
-        return error
+        console.error("Error fetching available buses:", error);
+        throw error; // Re-throw error to be handled by the caller
     }
-} 
+};
+
 
 export const busService = {
     createUserIntoDB,

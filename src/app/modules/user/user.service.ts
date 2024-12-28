@@ -11,6 +11,7 @@ const createUserIntoDB = async (userData: TUser): Promise<TUser> => {
 };
 
 const loginUser = async (payload: TLoginUser) => {
+   try {
     const {email, password} = payload;
     console.log(email)
     // checking if the user is exist
@@ -45,51 +46,11 @@ const loginUser = async (payload: TLoginUser) => {
 
   
     return accessToken;
+   } catch (error) {
+    return error
+   }
   };
-const getUserProfileFromDB = async (id : string) => {
-  const result = await UserModel.findById(id);
-  if (!result) {
-    throw new Error("something went wrong")
-  }
-  return result
-}
-const updateUserProfileIntoDB = async (id : string, data : Partial<TUser>) => {
-  const result = await UserModel.findByIdAndUpdate(id, data, {new : true});
-  if (!result) {
-    throw new Error("something went wrong")
-  }
-  return result
-}
-
-const getAllUsersFromDB = async () => {
-  try {
-    const result = await UserModel.find({});
-  if (!result) {
-    throw new Error("something went wrong")
-  }
-  return result;
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-const promoteUser = async (userId: unknown) => {
-  try {
-    const updatedUser = await UserModel.findByIdAndUpdate(userId, { role: 'admin' }, { new: true });
-  if (!updatedUser) {
-    throw new Error('User not found');
-  }
-  return updatedUser;
-  } catch (error) {
-    console.log(error)
-  }
-};
-
 export const userService = {
     createUserIntoDB,
     loginUser, 
-    getUserProfileFromDB,
-    updateUserProfileIntoDB,
-    getAllUsersFromDB,
-    promoteUser
 }

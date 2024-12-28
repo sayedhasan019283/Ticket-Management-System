@@ -38,18 +38,33 @@ const deleteTicketFromDB = async (id: string) => {
     }
 }
 
-const getAvailableTicketFromDB = async() => {
-    try {
-        const now = new Date();
-        const result = await TicketModel.find({ schedule: { $gte: now } });
-        if (!result) {
-            throw new Error("Didn't Find Any Ticket");
-        }
-        return result
-    } catch (error) {
-        return error
-    }
-} 
+const getAvailableTicketFromDB = async (id: string | undefined) => {
+  try {
+      const now = new Date();
+
+      // Build the query object
+      const query: Record<string, unknown> = {};
+
+      // If `id` is provided, search by `_id`. Otherwise, search by `schedule`
+      if (id) {
+          query._id = id ;
+      } else {
+          query.time = { $gte: now };
+      }
+
+      const result = await TicketModel.find(query);
+
+      if (!result || result.length === 0) {
+          throw new Error("Didn't Find Any Ticket");
+      }
+
+      return result;
+  } catch (error) {
+      console.error("Error fetching available tickets:", error);
+      throw error; // Re-throw the error to be handled by the caller
+  }
+};
+
 
 
 

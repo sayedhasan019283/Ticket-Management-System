@@ -2,11 +2,9 @@
 /* eslint-disable no-unused-vars */
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
-import sendResponse from '../../utils/sendResponse';
 import { TUser } from './user.interface';
 import { userService } from './user.service';
 import { NextFunction, Request, Response } from 'express'; 
-import config from '../../config';
 import UserModel from './user.model';
 import AppError from '../../errors/AppError';
 
@@ -63,83 +61,20 @@ const loginUser = catchAsync(async (req, res) => {
   
   });
 
-  const getUserProfile = async (req: Request, res: Response, next: NextFunction) => {
+  const logout = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const {userId , role } = req.user;
-      console.log(req.user)
-      const result = await userService.getUserProfileFromDB(userId);
-
-      if (!result) {
-        throw new Error("something went wrong")
-      }
+      res.clearCookie('authToken', { httpOnly: true, secure: true });
       res.status(200).json({
         statusCode: 200,
         success: true,
-        message: "User profile retrieved successfully",
-        data: result
+        message: "User logged out successfully",
       });
     } catch (error) {
       next(error)
     }
   }
-  const updateProfile = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const {userId } = req.user;
-      const data = req.body;
-      const result = await userService.updateUserProfileIntoDB(userId, data);
-
-      if (!result) {
-        throw new Error("something went wrong")
-      }
-      res.status(200).json({
-        statusCode: 200,
-        success: true,
-        message: "Profile updated successfully",
-        data: result
-      });
-    } catch (error) {
-      next(error)
-    }
-  }
-
-  const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const result = await userService.getAllUsersFromDB();
-
-      if (!result) {
-        throw new Error("something went wrong")
-      }
-      res.status(200).json({
-        statusCode: 200,
-        success: true,
-        message: "All Users retrieved successfully",
-        data: result
-      });
-    } catch (error) {
-      next(error)
-    }
-  }
-
-  const promoteAnUser = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { id } = req.params;
-      console.log(id)
-
-    const result = await userService.promoteUser(id);
-    if (!result) {
-      throw new Error("something went wrong")
-    }
-    } catch (error) {
-      console.log(error)
-    }
-
-  }
-
 export const userController = {
     createUser,
     loginUser, 
-    getUserProfile,
-    updateProfile,
-    getAllUsers,
-    promoteAnUser
+    logout
 };

@@ -13,7 +13,7 @@ const moduleRoutes = [
     route: openRoutes,
   },
   {
-    path: '/api',
+    path: '',
     route: userRoutes,
   },
   {

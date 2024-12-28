@@ -58,7 +58,16 @@ const deleteBus = async(req: Request, res: Response, next: NextFunction) => {
 
 const getAvailableBus = async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const result = await busService.getAvailableBusFromDB()
+        const { busName } = req.query;
+        if (
+            (typeof busName !== 'string' && typeof busName !== 'undefined')
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid query parameters provided!",
+            });
+        }
+        const result = await busService.getAvailableBusFromDB( busName)
         if (!result) {
             throw new Error("Didn't Find Any Bus");
         }
